@@ -22,7 +22,7 @@ resource "azurerm_resource_group" "rg" {
 
 # 3. Create the MySQL Database
 resource "azurerm_mysql_flexible_server" "db" {
-  name                = "campuserver"
+  name                = "rahgul-campus-mysql-server" # CHANGED NAME FOR GLOBAL UNIQUENESS
   resource_group_name = azurerm_resource_group.rg.name
   location            = azurerm_resource_group.rg.location
   sku_name            = "B_Standard_B1ms" # This is the minimal Burstable tier
@@ -40,8 +40,7 @@ resource "azurerm_mysql_flexible_server_firewall_rule" "allow_all_azure" {
   server_name         = azurerm_mysql_flexible_server.db.name
   
   # The IP range 0.0.0.0 to 0.0.0.0 is used to allow all Azure services access.
-  # If you want to allow global public access, you can set the start_ip_address 
-  # to a specific range or use 0.0.0.0 and 255.255.255.255 carefully.
+  # This enables the Web Apps to connect to the MySQL server.
   start_ip_address    = "0.0.0.0"
   end_ip_address      = "0.0.0.0" 
 }
