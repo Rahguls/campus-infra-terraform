@@ -1,4 +1,4 @@
-# main.tf - Blueprint for all Azure resources
+# main.tf - Blueprint for all Azure resources (CORRECTED)
 
 # 1. Configure the Azure Provider
 terraform {
@@ -28,8 +28,24 @@ resource "azurerm_mysql_flexible_server" "db" {
   sku_name            = "B_Standard_B1ms" # This is the minimal Burstable tier
   administrator_login = "campus"
   administrator_password = "Rahgul_220701212" # CHANGE THIS PASSWORD
-  public_network_access_enabled = true # This enables Public Access
+  
+  # REMOVED: public_network_access_enabled = true 
+  # This is implicitly enabled by the firewall rule below.
 }
+
+# 3b. Add Firewall Rule to enable Public Access (REQUIRED FIX)
+resource "azurerm_mysql_flexible_server_firewall_rule" "allow_all_azure" {
+  name                = "AllowAzureServices"
+  resource_group_name = azurerm_resource_group.rg.name
+  server_name         = azurerm_mysql_flexible_server.db.name
+  
+  # The IP range 0.0.0.0 to 0.0.0.0 is used to allow all Azure services access.
+  # If you want to allow global public access, you can set the start_ip_address 
+  # to a specific range or use 0.0.0.0 and 255.255.255.255 carefully.
+  start_ip_address    = "0.0.0.0"
+  end_ip_address      = "0.0.0.0" 
+}
+
 
 resource "azurerm_mysql_flexible_database" "main_db" {
   name                = "CampusDatabase"
