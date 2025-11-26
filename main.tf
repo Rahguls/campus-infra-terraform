@@ -22,7 +22,7 @@ resource "azurerm_resource_group" "rg" {
 
 # 3. Create the MySQL Database
 resource "azurerm_mysql_flexible_server" "db" {
-  name                = "rahgul-campus-mysql-server" # CHANGED NAME FOR GLOBAL UNIQUENESS
+  name                = "rahgul-campus-mysql-server" # GLOBALLY UNIQUE
   resource_group_name = azurerm_resource_group.rg.name
   location            = azurerm_resource_group.rg.location
   sku_name            = "B_Standard_B1ms" # This is the minimal Burstable tier
@@ -65,7 +65,7 @@ resource "azurerm_service_plan" "plan" {
 
 # 5. Create the Student Web App
 resource "azurerm_linux_web_app" "student_app" {
-  name                = "StudentApp"
+  name                = "rahgul-student-app" # CHANGED NAME FOR GLOBAL UNIQUENESS
   resource_group_name = azurerm_resource_group.rg.name
   location            = azurerm_service_plan.plan.location
   service_plan_id     = azurerm_service_plan.plan.id
@@ -88,7 +88,7 @@ resource "azurerm_linux_web_app" "student_app" {
 
 # 6. Create the Admin Web App
 resource "azurerm_linux_web_app" "admin_app" {
-  name                = "AdminApp"
+  name                = "rahgul-admin-app" # CHANGED NAME FOR GLOBAL UNIQUENESS
   resource_group_name = azurerm_resource_group.rg.name
   location            = azurerm_service_plan.plan.location
   service_plan_id     = azurerm_service_plan.plan.id
