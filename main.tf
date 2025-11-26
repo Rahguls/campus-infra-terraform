@@ -71,6 +71,8 @@ resource "azurerm_linux_web_app" "student_app" {
   service_plan_id     = azurerm_service_plan.plan.id
 
   site_config {
+    # FIX: Explicitly set always_on to false for the F1 (Free) tier
+    always_on           = false 
     application_stack {
       php_version = "8.2"
     }
@@ -92,6 +94,8 @@ resource "azurerm_linux_web_app" "admin_app" {
   service_plan_id     = azurerm_service_plan.plan.id
 
   site_config {
+    # FIX: Explicitly set always_on to false for the F1 (Free) tier
+    always_on           = false
     application_stack {
       php_version = "8.2"
     }
